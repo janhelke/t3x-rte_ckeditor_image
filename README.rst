@@ -1,5 +1,7 @@
 .. |badge1| image:: https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image
+  :alt: License
 .. |badge2| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg
+  :alt: PHPStan
 .. |badge3| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg
   :alt: PHPCodeSniffer
 .. |badge4| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg
