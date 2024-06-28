@@ -86,6 +86,7 @@ Installation
 4. Include extension Static Template file
 
     1. go to Template » Info/Modify » Edit whole template record » Includes
+    
     2. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
 
 Configuration
