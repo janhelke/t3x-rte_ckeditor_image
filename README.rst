@@ -17,7 +17,7 @@
 .. |badge10| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/version/shields.svg
   :alt: Latest version       
 .. Generated with 🧡 at typo3-badges.dev
-|badge1||badge2||badge3||badge4||badge5||badge6||badge7||badge8||badge9||badge10|
+|badge1| |badge2| |badge3| |badge4| |badge5| |badge6| |badge7| |badge8| |badge9| |badge10|
 
 ====================================
 Image support for CKEditor for TYPO3
