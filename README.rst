@@ -39,7 +39,7 @@ Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x
 Installation
 ============
 
-1. Install the extension
+#. Install the extension
 
     1. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
 
@@ -47,7 +47,7 @@ Installation
             
             composer req netresearch/rte-ckeditor-image
         
-2. Add a preset for rte_ckeditor or override the default one (as below):
+#. Add a preset for rte_ckeditor or override the default one (as below):
 
     .. code-block:: php
     
@@ -75,7 +75,7 @@ Installation
                 - insertImage
         
 
-3. Enable RTE config preset (e.g. ``default``)
+#. Enable RTE config preset (e.g. ``default``)
 
     .. code-block::
 
@@ -83,11 +83,11 @@ Installation
         RTE.default.preset = default
     
 
-4. Include extension Static Template file
+#. Include extension Static Template file
 
-    1. go to Template » Info/Modify » Edit whole template record » Includes
+    #. go to Template » Info/Modify » Edit whole template record » Includes
     
-    2. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
+    #. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
 
 Configuration
 =============
