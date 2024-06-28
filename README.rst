@@ -25,8 +25,9 @@
 Image support for CKEditor for TYPO3
 ====================================
 
-This extension adds the TYPO3 image browser to CKEditor.\
-Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`__ .
+This extension adds the TYPO3 image browser to CKEditor.
+
+Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`__.
 
 .. image:: Resources/Public/Images/demo.gif?raw=true 
 
@@ -41,7 +42,7 @@ Installation
 
 1. Install the extension
 
- 1. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
+    #. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
 
         .. code-block:: shell
             
@@ -85,8 +86,8 @@ Installation
 
 4. Include extension Static Template file
 
- 1. go to Template » Info/Modify » Edit whole template record » Includes   
- 2. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
+    #. go to Template » Info/Modify » Edit whole template record » Includes   
+    #. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
 
 Configuration
 =============
