@@ -1,24 +1,25 @@
-.. image:: https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image
+.. |badge1| image:: https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image
   :alt: License
-.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg)
+.. |badge2| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg
   :alt: PHPStan
-.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg
+.. |badge3| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg
   :alt: PHPCodeSniffer
-.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg
+.. |badge4| image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg
   :alt: CodeQL
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/downloads/shields.svg
+.. |badge5| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/downloads/shields.svg
   :alt: Total downloads
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/extension/shields.svg
+.. |badge6| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/extension/shields.svg
   :alt: TYPO3 extension
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/stability/shields.svg
+.. |badge7| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/stability/shields.svg
   :alt: Stability
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/typo3/shields.svg
+.. |badge8| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/typo3/shields.svg
   :alt: TYPO3 versions
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/verified/shields.svg
+.. |badge9| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/verified/shields.svg
   :alt: Verified state
-.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/version/shields.svg
+.. |badge10| image:: https://typo3-badges.dev/badge/rte_ckeditor_image/version/shields.svg
   :alt: Latest version       
 .. Generated with 🧡 at typo3-badges.dev
+|badge1||badge2||badge3||badge4||badge5||badge6||badge7||badge8||badge9||badge10|
 
 ====================================
 Image support for CKEditor for TYPO3
