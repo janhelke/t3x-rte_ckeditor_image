@@ -1,16 +1,24 @@
 .. image:: https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image
   :alt: License
-![PHPStan](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg)
-![PHPCodeSniffer](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg)
-![CodeQL](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg)
-
-![Total downloads](https://typo3-badges.dev/badge/rte_ckeditor_image/downloads/shields.svg)
-![TYPO3 extension](https://typo3-badges.dev/badge/rte_ckeditor_image/extension/shields.svg)
-![Stability](https://typo3-badges.dev/badge/rte_ckeditor_image/stability/shields.svg)
-![TYPO3 versions](https://typo3-badges.dev/badge/rte_ckeditor_image/typo3/shields.svg)
-![Verified state](https://typo3-badges.dev/badge/rte_ckeditor_image/verified/shields.svg)
-![Latest version](https://typo3-badges.dev/badge/rte_ckeditor_image/version/shields.svg)
-<!-- Generated with 🧡 at typo3-badges.dev -->
+.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg)
+  :alt: PHPStan
+.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg
+  :alt: PHPCodeSniffer
+.. image:: https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg
+  :alt: CodeQL
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/downloads/shields.svg
+  :alt: Total downloads
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/extension/shields.svg
+  :alt: TYPO3 extension
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/stability/shields.svg
+  :alt: Stability
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/typo3/shields.svg
+  :alt: TYPO3 versions
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/verified/shields.svg
+  :alt: Verified state
+.. image:: https://typo3-badges.dev/badge/rte_ckeditor_image/version/shields.svg
+  :alt: Latest version       
+.. Generated with 🧡 at typo3-badges.dev
 
 ====================================
 Image support for CKEditor for TYPO3
