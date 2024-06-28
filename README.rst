@@ -42,12 +42,11 @@ Installation
 
 1. Install the extension
 
-
     #. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
 
-        .. code-block:: shell
-            
-            composer req netresearch/rte-ckeditor-image
+    .. code-block:: shell
+        
+        composer req netresearch/rte-ckeditor-image
         
 2. Add a preset for rte_ckeditor or override the default one (as below):
 
@@ -86,7 +85,6 @@ Installation
     
 
 4. Include extension Static Template file
-
 
     #. go to Template » Info/Modify » Edit whole template record » Includes   
     #. choose ``CKEditor Image Support`` for ``Include static (from extensions)`` before the Fluid Styled content 
