@@ -16,7 +16,7 @@ Image support for CKEditor for TYPO3
 ====================================
 
 This extension adds the TYPO3 image browser to CKEditor.\
-Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`.
+Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`__ .
 
 <kbd>![](Resources/Public/Images/demo.gif?raw=true)</kbd>
 
@@ -31,7 +31,7 @@ Installation
 
 1. Install the extension
 
-    1. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>``
+    1. with composer from `packagist <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
 
         .. code-block:: shell
             
@@ -102,7 +102,7 @@ The maximum dimensions relate to the configuration for magic images which have t
     }
 
 
-Current versions of TYPO3 won't render TSConfig settings correctly out of custom template extensions (see the corresponding T3 bug: .. __: https://forge.typo3.org/issues/87068).
+Current versions of TYPO3 won't render TSConfig settings correctly out of custom template extensions (see the corresponding T3 bug: https://forge.typo3.org/issues/87068).
 In this case just add the settings to root page config.
 
 
@@ -133,7 +133,7 @@ Configure a default css class for every image
 Image lazyload support
 ----------------------
 
-The extension supports [TYPO3 lazyload handling](.. __: https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.3/Feature-90426-Browser-nativeLazyLoadingForImages.html) (fluid_styled_content) for native browser lazyload.
+The extension supports `TYPO3 lazyload handling <https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.3/Feature-90426-Browser-nativeLazyLoadingForImages.html>`__ (fluid_styled_content) for native browser lazyload.
 
 ..  code-block::
 
@@ -157,6 +157,6 @@ By default, the extensions from ``$TYPO3_CONF_VARS['GFX']['imagefile_ext']`` are
 Deployment
 ==========
 
-- developed on [GitHub]( .. __: https://github.com/netresearch/t3x-rte_ckeditor_image)
-- [composer repository]( .. __: https://packagist.org/packages/netresearch/rte-ckeditor-image)
+- developed on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`__
+- `composer repository <https://packagist.org/packages/netresearch/rte-ckeditor-image>`__
 - new version will automatically be uploaded to TER via Github Action when creating a new Github release
