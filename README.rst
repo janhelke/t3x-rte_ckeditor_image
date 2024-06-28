@@ -28,7 +28,7 @@ Image support for CKEditor for TYPO3
 This extension adds the TYPO3 image browser to CKEditor.\
 Add issues or explore the project on `GitHub <https://github.com/netresearch/t3x-rte_ckeditor_image>`__ .
 
-<kbd>![](Resources/Public/Images/demo.gif?raw=true)</kbd>
+.. image:: Resources/Public/Images/demo.gif?raw=true 
 
 - Same image handling as rtehtmlarea (magic images, usual RTE TSConfig supported)
 
