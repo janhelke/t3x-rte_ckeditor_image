@@ -1,4 +1,5 @@
-`License <https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image>`__
+.. image:: https://img.shields.io/github/license/netresearch/t3x-rte_ckeditor_image
+  :alt: License
 ![PHPStan](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpstan.yml/badge.svg)
 ![PHPCodeSniffer](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/phpcs.yml/badge.svg)
 ![CodeQL](https://github.com/netresearch/t3x-rte_ckeditor_image/actions/workflows/codeql-analysis.yml/badge.svg)
