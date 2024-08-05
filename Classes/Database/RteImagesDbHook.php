@@ -31,9 +31,12 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\Service\MagicImageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+use TYPO3\CMS\Core\Resource;
+use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Class for processing of the FAL soft references on img tags inserted in RTE content
@@ -273,10 +276,6 @@ class RteImagesDbHook
         }
 
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $magicImageService = GeneralUtility::makeInstance(MagicImageService::class);
-
-        $pageTsConfig = BackendUtility::getPagesTSconfig(0);
-        $magicImageService->setMagicImageMaximumDimensions($pageTsConfig['RTE.']['default.'] ?? []);
 
         foreach ($imgSplit as $key => $v) {
             // Odd numbers contains the <img> tags
@@ -333,37 +332,7 @@ class RteImagesDbHook
                 }
 
                 if ($originalImageFile instanceof File) {
-                    // Build public URL to image, remove trailing slash from site URL
-                    $imageFileUrl = rtrim($siteUrl, '/') . $originalImageFile->getPublicUrl();
-
-                    // Public url of local file is relative to the site url, absolute otherwise
-                    if (($absoluteUrl !== $imageFileUrl) && ($absoluteUrl !== $originalImageFile->getPublicUrl())) {
-                        // Magic image case: get a processed file with the requested configuration
-                        $imageConfiguration = [
-                            'width' => $imageWidth,
-                            'height' => $imageHeight,
-                        ];
-
-                        // ensure we do get a processed file
-                        GeneralUtility::makeInstance(Context::class)
-                            ->setAspect('fileProcessing', new FileProcessingAspect(false));
-
-                        $magicImage = $magicImageService
-                            ->createMagicImage($originalImageFile, $imageConfiguration);
-
-                        $attribArray['width'] = $magicImage->getProperty('width');
-                        $attribArray['height'] = $magicImage->getProperty('height');
-
-                        $imgSrc = $magicImage->getPublicUrl();
-
-                        // publicUrl like 'https://www.domain.xy/typo3/image/process?token=...'?
-                        // -> generate img source from storage basepath and identifier instead
-                        if ($imgSrc !== null && str_contains($imgSrc, 'process?token=')) {
-                            $imgSrc = $originalImageFile->getStorage()->getPublicUrl($magicImage);
-                        }
-
-                        $attribArray['src'] = $imgSrc;
-                    }
+                    $attribArray = $this->fetchImageAttributesFromLocalFile($originalImageFile, $siteUrl);
                 } elseif (
                     $this->fetchExternalImages
                     && $isBackend
@@ -371,73 +340,15 @@ class RteImagesDbHook
                 ) {
                     // External image from another URL: in that case, fetch image, unless
                     // the feature is disabled, or we are not in backend mode.
-                    //
-                    // Fetch the external image
-                    $externalFile = null;
-                    try {
-                        $externalFile = GeneralUtility::getUrl($absoluteUrl);
-                    } catch (\Throwable) {
-                        // do nothing, further image processing will be skipped
-                    }
+                    $attribArray = $this->fetchImageAttributesFromExternalFile($absoluteUrl, $attribArray);
 
-                    if ($externalFile !== null) {
-                        $pU = parse_url($absoluteUrl);
-                        $path = \is_array($pU) ? ($pU['path'] ?? '') : '';
-                        $pI = pathinfo($path);
-                        $extension = strtolower($pI['extension'] ?? '');
-
-                        if (
-                            $extension === 'jpg'
-                            || $extension === 'jpeg'
-                            || $extension === 'gif'
-                            || $extension === 'png'
-                        ) {
-                            $fileName = substr(md5($absoluteUrl), 0, 10) . '.' . ($pI['extension'] ?? '');
-                            // We insert this image into the user default upload folder
-                            $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
-                            $fileObject = $folder->createFile($fileName)->setContents($externalFile);
-                            $imageConfiguration = [
-                                'width' => $attribArray['width'],
-                                'height' => $attribArray['height'],
-                            ];
-
-                            $magicImage = $magicImageService
-                                ->createMagicImage($fileObject, $imageConfiguration);
-
-                            $attribArray['width'] = $magicImage->getProperty('width');
-                            $attribArray['height'] = $magicImage->getProperty('height');
-                            $attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-                            $attribArray['src'] = $magicImage->getPublicUrl();
-                        }
-                    }
                 } elseif (str_starts_with($absoluteUrl, $siteUrl)) {
                     // Finally, check image as local file (siteURL equals the one of the image)
                     // Image has no data-htmlarea-file-uid attribute
-                    // Relative path, rawurldecoded for special characters.
-                    $path = rawurldecode(substr($absoluteUrl, \strlen($siteUrl)));
-                    // Absolute filepath, locked to relative path of this project
-                    $filepath = GeneralUtility::getFileAbsFileName($path);
-                    // Check file existence (in relative directory to this installation!)
-                    if (($filepath !== '') && @is_file($filepath)) {
-                        // Let's try to find a file uid for this image
-                        try {
-                            $fileOrFolderObject = $resourceFactory->retrieveFileOrFolderObject($path);
-                            if ($fileOrFolderObject instanceof FileInterface) {
-                                $fileIdentifier = $fileOrFolderObject->getIdentifier();
-                                $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
-                                if ($fileObject instanceof AbstractFile) {
-                                    $fileUid = $fileObject->getUid();
-                                    // if the retrieved file is a processed file, get the original file...
-                                    if ($fileObject->hasProperty('original')) {
-                                        $fileUid = $fileObject->getProperty('original');
-                                    }
+                    $fileUid = $this->getFileUidFromLocalFile($absoluteUrl, $siteUrl);
 
-                                    $attribArray['data-htmlarea-file-uid'] = $fileUid;
-                                }
-                            }
-                        } catch (ResourceDoesNotExistException) {
-                            // Nothing to be done if file/folder not found
-                        }
+                    if ($fileUid !== null) {
+                        $attribArray['data-htmlarea-file-uid'] = $fileUid;
                     }
                 }
 
@@ -467,6 +378,152 @@ class RteImagesDbHook
         }
 
         return implode('', $imgSplit);
+    }
+
+    private function fetchImageAttributesFromLocalFile($originalImageFile, $siteUrl): array|null
+    {
+        $attribArray = null;
+
+        // Build public URL to image, remove trailing slash from site URL
+        $imageFileUrl = rtrim($siteUrl, '/') . $originalImageFile->getPublicUrl();
+
+        // Public url of local file is relative to the site url, absolute otherwise
+        if (($absoluteUrl !== $imageFileUrl) && ($absoluteUrl !== $originalImageFile->getPublicUrl())) {
+            // Magic image case: get a processed file with the requested configuration
+            $imageConfiguration = [
+                'width' => $imageWidth,
+                'height' => $imageHeight,
+            ];
+
+            // ensure we do get a processed file
+            GeneralUtility::makeInstance(Context::class)
+                ->setAspect('fileProcessing', new FileProcessingAspect(false));
+
+            $magicImage = $this->createMagicImage($originalImageFile, $imageConfiguration);
+
+            $attribArray['width'] = $magicImage->getProperty('width');
+            $attribArray['height'] = $magicImage->getProperty('height');
+
+            $imgSrc = $magicImage->getPublicUrl();
+
+            // publicUrl like 'https://www.domain.xy/typo3/image/process?token=...'?
+            // -> generate img source from storage basepath and identifier instead
+            if ($imgSrc !== null && str_contains($imgSrc, 'process?token=')) {
+                $imgSrc = $originalImageFile->getStorage()->getPublicUrl($magicImage);
+            }
+
+            $attribArray['src'] = $imgSrc;
+        }
+
+        return $attribArray;
+    }
+
+    /**
+     * @param scalar[] $attribArray
+     * @return scalar[]
+     */
+    private function fetchImageAttributesFromExternalFile(string $absoluteUrl, array $attribArray): array
+    {
+        // Fetch the external image
+        $externalFile = null;
+        try {
+            $externalFile = GeneralUtility::getUrl($absoluteUrl);
+        } catch (\Throwable) {
+            // do nothing, further image processing will be skipped
+        }
+
+        if ($externalFile !== null) {
+            $pU = parse_url($absoluteUrl);
+            $path = \is_array($pU) ? ($pU['path'] ?? '') : '';
+            $pI = pathinfo($path);
+            $extension = strtolower($pI['extension'] ?? '');
+
+            if (
+                $extension === 'jpg'
+                || $extension === 'jpeg'
+                || $extension === 'gif'
+                || $extension === 'png'
+            ) {
+                $fileName = hash('sha256', $absoluteUrl) . '.' . ($pI['extension'] ?? '');
+                // We insert this image into the user default upload folder
+                $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+                $fileObject = $folder->createFile($fileName)->setContents($externalFile);
+                $imageConfiguration = [
+                    'width' => $attribArray['width'],
+                    'height' => $attribArray['height'],
+                ];
+
+                $magicImage = $this->createMagicImage($fileObject, $imageConfiguration);
+
+                $attribArray['width'] = $magicImage->getProperty('width');
+                $attribArray['height'] = $magicImage->getProperty('height');
+                $attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
+                $attribArray['src'] = $magicImage->getPublicUrl();
+            }
+        }
+
+        return $attribArray;
+    }
+
+    /**
+     * Creates a magic image
+     *
+     * @param int[] $fileConfiguration (width, height)
+     */
+    private function createMagicImage(File $imageFileObject, array $fileConfiguration): ProcessedFile
+    {
+        // Create the magic image
+        $magicImage = $imageFileObject->process(
+            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
+            [
+                'width' => $fileConfiguration['width'] . 'm',
+                'height' => $fileConfiguration['height'] . 'm',
+            ]
+        );
+
+        return $magicImage;
+    }
+
+    private function getFileUidFromLocalFile(string $absoluteUrl, string $siteUrl): string|null
+    {
+        $fileUid = null;
+
+        // Relative path, rawurldecoded for special characters.
+        $path = rawurldecode(substr($absoluteUrl, \strlen($siteUrl)));
+
+        // Absolute filepath, locked to relative path of this project
+        $filepath = GeneralUtility::getFileAbsFileName($path);
+
+        // Check file existence (in relative directory to this installation!)
+        if ($filepath === '') {
+            return null;
+        }
+
+        if (! is_file($filepath)) {
+            return null;
+        }
+
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+
+        // Let's try to find a file uid for this image
+        try {
+            $fileOrFolderObject = $resourceFactory->retrieveFileOrFolderObject($path);
+            if ($fileOrFolderObject instanceof FileInterface) {
+                $fileIdentifier = $fileOrFolderObject->getIdentifier();
+                $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+                if ($fileObject instanceof AbstractFile) {
+                    $fileUid = $fileObject->getUid();
+                    // if the retrieved file is a processed file, get the original file...
+                    if ($fileObject->hasProperty('original')) {
+                        $fileUid = $fileObject->getProperty('original');
+                    }
+                }
+            }
+        } catch (ResourceDoesNotExistException) {
+            // Nothing to be done if file/folder not found
+        }
+
+        return $fileUid;
     }
 
     /**
