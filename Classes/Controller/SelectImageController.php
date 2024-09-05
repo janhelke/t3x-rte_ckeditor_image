@@ -203,7 +203,7 @@ class SelectImageController extends ElementBrowserController
      */
     protected function getMaxDimensions(array $params): array
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($params['pid'] ?? 0);
+        $tsConfig = BackendUtility::getPagesTSconfig((int) ($params['pid'] ?? 0));
         $richtextConfigurationName = $params['richtextConfigurationName'] ?? 'default';
         if ($richtextConfigurationName === '') {
             $richtextConfigurationName = 'default';
