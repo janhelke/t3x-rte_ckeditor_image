@@ -165,9 +165,9 @@ class SelectImageController extends ElementBrowserController
     /**
      * Get the processed image.
      *
-     * @param File     $file          The original image file
-     * @param string[] $params        The parameters used to process the image
-     * @param array    $maxDimensions The maximum width and height
+     * @param File     $file                    The original image file
+     * @param string[] $params                  The parameters used to process the image
+     * @param array<string, int> $maxDimensions The maximum width and height
      *
      * @return ProcessedFile
      */
@@ -196,11 +196,16 @@ class SelectImageController extends ElementBrowserController
             );
     }
 
+    /**
+     * @param string[] $params
+     *
+     * @return int[]|array<string, int>
+     */
     protected function getMaxDimensions(array $params): array
     {
         $tsConfig = BackendUtility::getPagesTSconfig($params['pid'] ?? 0);
         $richtextConfigurationName = $params['richtextConfigurationName'] ?? 'default';
-        if (empty($richtextConfigurationName)) {
+        if ($richtextConfigurationName === '') {
             $richtextConfigurationName = 'default';
         }
         $rteConfig = $tsConfig['RTE.'][$richtextConfigurationName . '.'];
