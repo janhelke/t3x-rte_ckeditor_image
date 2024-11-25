@@ -80,6 +80,8 @@ class ImageRenderingController extends AbstractPlugin
                     $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                     $systemImage     = $resourceFactory->getFileObject($fileUid);
 
+                    $imageSource = 'intential-invalid-to-trigger-scaling';
+
                     // check if there is a processed variant, if not, create one
                     /** @var ProcessedFilesHandler $processedHandler */
                     $processedHandler = GeneralUtility::makeInstance(ProcessedFilesHandler::class);
